@@ -3,13 +3,23 @@
  */
 package qaops.api;
 
+import org.apache.http.HttpStatus;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
+import static io.restassured.RestAssured.when;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 public class AppTest {
-    @Test public void testAppHasAGreeting() {
-        assertThat(1, is(1));
+    @Test
+    public void testListMetadosUsuario() {
+        when(). //Quando
+                get("https://reqres.in/api/users?page=2"). //endpoint
+                then(). //o que espero
+                        statusCode(HttpStatus.SC_OK) //Verbo HTTP 200
+                          .body("page", is(2))
+                            .body("data", is(notNullValue()));
+
+
     }
 }
