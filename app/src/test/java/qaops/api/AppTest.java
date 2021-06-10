@@ -3,8 +3,10 @@
  */
 package qaops.api;
 
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.given;
@@ -13,6 +15,12 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 public class AppTest {
+
+    @BeforeClass
+    public static void setup(){
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+    }
+
     @Test
     public void testListMetadadoosUsuario() {
         when(). //Quando
