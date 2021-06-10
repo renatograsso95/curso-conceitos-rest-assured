@@ -1,4 +1,5 @@
 plugins {
+    id 'java'
     id 'application'
 }
 
@@ -7,10 +8,7 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'junit:junit:4.13.1'
-
-    implementation 'com.google.guava:guava:30.0-jre'
+    testImplementation 'junit:junit:4.+'
 }
 
-application {
-}
+task teste(type:Test) {}
