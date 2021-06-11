@@ -8,6 +8,7 @@ import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import qaops.api.dominio.Usuario;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -36,12 +37,10 @@ public class UsuarioTeste {
 
     @Test
     public void testeCriarUserComSucesso(){
-        given().log().all() // Define o contexto da aplicação como por exemplo destacar headers, parametros, portas e tokens
+        Usuario usuario = new Usuario("renato", "qa-analyst");
+        given()
                 .contentType(ContentType.JSON)
-                .body("{\n" +
-                        "    \"name\": \"renato\",\n" +
-                        "    \"job\": \"qa-analyst\"\n" +
-                        "}").
+                .body(usuario).
                 when() //Depois do when devemos inserir qual verbo será destacado
                     .post("/user").
                 then() //Then é o resultado a ser exibido, validação

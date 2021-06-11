@@ -10,7 +10,5 @@ repositories {
 dependencies {
     testImplementation 'junit:junit:4.+'
     testImplementation 'io.rest-assured:rest-assured:4.4.0'
-
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.3'
 }
-
-task teste(type:Test) {}
