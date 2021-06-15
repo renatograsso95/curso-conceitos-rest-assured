@@ -20,24 +20,38 @@ public class TestUsuario extends TestBase {
     public void testeMostraPaginaEspecifica() {
         given()
                 .params("page", "2").
-        when(). //Quando
+                when(). //Quando
                 get(LISTA_USUARIOS_ENDPOINT). //endpoint
                 then(). //o que espero
-                        statusCode(HttpStatus.SC_OK) //Verbo HTTP 200
-                          .body("page", is(2))
-                            .body("data", is(notNullValue()));
+                statusCode(HttpStatus.SC_OK) //Verbo HTTP 200
+                .body("page", is(2))
+                .body("data", is(notNullValue()));
     }
 
     @Test
-    public void testeCriaUsuarioComSucesso(){
+    public void testeCriaUsuarioComSucesso() {
         Usuario usuario = new Usuario("renato", "qa-analyst", "email@gmail.com");
         given()
                 .body(usuario).
                 when() //Depois do when devemos inserir qual verbo será destacado
-                    .post(CRIAR_USUARIOS_ENDPOINT).
+                .post(CRIAR_USUARIOS_ENDPOINT).
                 then() //Then é o resultado a ser exibido, validação
-                    .statusCode(HttpStatus.SC_CREATED).
-                    body("name",is("renato"));
+                .statusCode(HttpStatus.SC_CREATED).
+                body("name", is("renato"));
+    }
 
+    @Test
+    public void testeTamanhoDosItemsMostradosIgalAoPerPage() {
+        given()
+                .params("page", "2").
+                when(). //Quando
+                get(LISTA_USUARIOS_ENDPOINT). //endpoint
+                then(). //o que espero
+                statusCode(HttpStatus.SC_OK) //Verbo HTTP 200
+                .body(
+                        "page", is(2),
+                        "data.size()", is(6),
+                        "data.findAll {it.avatar.starWith('https://s3.amazonaws.com')}.size()", is(6)
+                );
     }
 }
