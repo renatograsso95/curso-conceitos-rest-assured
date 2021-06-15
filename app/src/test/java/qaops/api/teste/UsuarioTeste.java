@@ -14,12 +14,15 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class UsuarioTeste extends BaseTeste {
 
+    private static final String LISTA_USUARIOS_ENDPOINT = "/users";
+    private static final String CRIAR_USUARIOS_ENDPOINT = "/user";
+
     @Test
     public void testListMetadadoosUsuario() {
         given()
                 .params("page", "2").
         when(). //Quando
-                get("/users"). //endpoint
+                get(LISTA_USUARIOS_ENDPOINT). //endpoint
                 then(). //o que espero
                         statusCode(HttpStatus.SC_OK) //Verbo HTTP 200
                           .body("page", is(2))
@@ -32,7 +35,7 @@ public class UsuarioTeste extends BaseTeste {
         given()
                 .body(usuario).
                 when() //Depois do when devemos inserir qual verbo será destacado
-                    .post("/user").
+                    .post(CRIAR_USUARIOS_ENDPOINT).
                 then() //Then é o resultado a ser exibido, validação
                     .statusCode(HttpStatus.SC_CREATED).
                     body("name",is("renato"));

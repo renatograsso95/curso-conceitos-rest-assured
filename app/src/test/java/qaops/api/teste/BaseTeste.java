@@ -10,6 +10,8 @@ import static io.restassured.RestAssured.baseURI;
 
 public class BaseTeste {
 
+
+
     @BeforeClass
     public static void setup(){
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
