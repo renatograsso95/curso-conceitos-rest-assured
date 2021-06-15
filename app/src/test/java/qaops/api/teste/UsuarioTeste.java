@@ -30,7 +30,6 @@ public class UsuarioTeste extends BaseTeste {
     public void testeCriarUserComSucesso(){
         Usuario usuario = new Usuario("renato", "qa-analyst", "email@gmail.com");
         given()
-                .contentType(ContentType.JSON)
                 .body(usuario).
                 when() //Depois do when devemos inserir qual verbo será destacado
                     .post("/user").
