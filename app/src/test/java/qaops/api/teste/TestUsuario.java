@@ -3,7 +3,6 @@
  */
 package qaops.api.teste;
 
-import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
 import qaops.api.dominio.Usuario;
@@ -12,13 +11,13 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
-public class UsuarioTeste extends BaseTeste {
+public class TestUsuario extends TestBase {
 
     private static final String LISTA_USUARIOS_ENDPOINT = "/users";
     private static final String CRIAR_USUARIOS_ENDPOINT = "/user";
 
     @Test
-    public void testListMetadadoosUsuario() {
+    public void testeMostraPaginaEspecifica() {
         given()
                 .params("page", "2").
         when(). //Quando
@@ -30,7 +29,7 @@ public class UsuarioTeste extends BaseTeste {
     }
 
     @Test
-    public void testeCriarUserComSucesso(){
+    public void testeCriaUsuarioComSucesso(){
         Usuario usuario = new Usuario("renato", "qa-analyst", "email@gmail.com");
         given()
                 .body(usuario).
