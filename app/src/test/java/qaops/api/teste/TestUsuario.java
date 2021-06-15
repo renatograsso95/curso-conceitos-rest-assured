@@ -42,16 +42,31 @@ public class TestUsuario extends TestBase {
 
     @Test
     public void testeTamanhoDosItemsMostradosIgalAoPerPage() {
+        int paginaEsperada = 2;
+
+       int perPageEsperado = retornaPerPageEsperado(paginaEsperada);
+
         given()
-                .params("page", "2").
+                .params("page", paginaEsperada).
                 when(). //Quando
-                get(LISTA_USUARIOS_ENDPOINT). //endpoint
+                  get(LISTA_USUARIOS_ENDPOINT). //endpoint
                 then(). //o que espero
                 statusCode(HttpStatus.SC_OK) //Verbo HTTP 200
                 .body(
-                        "page", is(2),
-                        "data.size()", is(6),
-                        "data.findAll {it.avatar.starWith('https://s3.amazonaws.com')}.size()", is(6)
+                        "page", is(paginaEsperada),
+                        "data.size()", is(perPageEsperado),
+                        "data.findAll {it.avatar.startsWith('https://s3.amazonaws.com') }.size()", is(perPageEsperado) //Groovy Collection
                 );
+    }
+
+    private int retornaPerPageEsperado(int page) {
+      return given().
+                params("page", page).
+                when()
+                    .get(LISTA_USUARIOS_ENDPOINT).
+                        then().
+                            statusCode(HttpStatus.SC_OK).
+                        extract().
+                            path("per_page");
     }
 }
