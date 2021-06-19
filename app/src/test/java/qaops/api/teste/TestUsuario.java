@@ -8,13 +8,15 @@ import org.junit.Test;
 import qaops.api.dominio.Usuario;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class TestUsuario extends TestBase {
 
     private static final String LISTA_USUARIOS_ENDPOINT = "/users";
     private static final String CRIAR_USUARIOS_ENDPOINT = "/user";
+    private static final String MOSTRAR_USUARIOS_ENDPOINT = "/users/{userId}";
+
 
     @Test
     public void testeMostraPaginaEspecifica() {
@@ -57,6 +59,23 @@ public class TestUsuario extends TestBase {
                         "data.size()", is(perPageEsperado),
                         "data.findAll {it.avatar.startsWith('https://reqres.in/img/faces') }.size()", is(perPageEsperado) //Groovy Collection
                 );
+
+    }
+
+    @Test
+    public void testMostraUsuarioEspecifico(){
+                Usuario usuario =  given().
+                pathParam("userId", "2")
+                .when()
+                    .get(MOSTRAR_USUARIOS_ENDPOINT)
+                        .then()
+                   .statusCode(HttpStatus.SC_OK)
+                        .extract()
+                        .body().jsonPath().getObject("data", Usuario.class);
+                            assertThat(usuario.getEmail(), containsString("@reqres.in"));
+                             assertThat(usuario.getName(), containsString("Janet"));
+                              assertThat(usuario.getLastName(), containsString("Weaver"));
+
 
     }
 
