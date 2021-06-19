@@ -55,8 +55,9 @@ public class TestUsuario extends TestBase {
                 .body(
                         "page", is(paginaEsperada),
                         "data.size()", is(perPageEsperado),
-                        "data.findAll {it.avatar.startsWith('https://s3.amazonaws.com') }.size()", is(perPageEsperado) //Groovy Collection
+                        "data.findAll {it.avatar.startsWith('https://reqres.in/img/faces') }.size()", is(perPageEsperado) //Groovy Collection
                 );
+
     }
 
     private int retornaPerPageEsperado(int page) {
