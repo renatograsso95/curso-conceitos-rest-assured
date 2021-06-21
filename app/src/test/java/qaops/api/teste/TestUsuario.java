@@ -32,7 +32,7 @@ public class TestUsuario extends TestBase {
 
     @Test
     public void testeCriaUsuarioComSucesso() {
-        Usuario usuario = new Usuario("renato", "qa-analyst", "email@gmail.com");
+        Usuario usuario = new Usuario("renato", "qa-analyst", "email@gmail.com", "email@gmail.com");
         given()
                 .body(usuario).
                 when() //Depois do when devemos inserir qual verbo será destacado
