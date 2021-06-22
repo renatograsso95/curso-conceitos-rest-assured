@@ -7,6 +7,9 @@ import org.apache.http.HttpStatus;
 import org.junit.Test;
 import qaops.api.dominio.Usuario;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -21,72 +24,75 @@ public class TestUsuario extends TestBase {
     @Test
     public void testeMostraPaginaEspecifica() {
         given()
-                .params("page", "2").
+                .params( "page", "2" ).
                 when(). //Quando
-                get(LISTA_USUARIOS_ENDPOINT). //endpoint
+                get( LISTA_USUARIOS_ENDPOINT ). //endpoint
                 then(). //o que espero
-                statusCode(HttpStatus.SC_OK) //Verbo HTTP 200
-                .body("page", is(2))
-                .body("data", is(notNullValue()));
+                statusCode( HttpStatus.SC_OK ) //Verbo HTTP 200
+                .body( "page", is( 2 ) )
+                .body( "data", is( notNullValue() ) );
     }
 
     @Test
     public void testeCriaUsuarioComSucesso() {
-        Usuario usuario = new Usuario("renato", "qa-analyst", "email@gmail.com", "email@gmail.com");
+        Map< String, String > usuario = new HashMap<>();
+        usuario.put( "name", "renato" );
+        usuario.put( "job", "qa tester" );
+
         given()
-                .body(usuario).
+                .body( usuario ).
                 when() //Depois do when devemos inserir qual verbo será destacado
-                .post(CRIAR_USUARIOS_ENDPOINT).
+                .post( CRIAR_USUARIOS_ENDPOINT ).
                 then() //Then é o resultado a ser exibido, validação
-                .statusCode(HttpStatus.SC_CREATED).
-                body("name", is("renato"));
+                .statusCode( HttpStatus.SC_CREATED ).
+                body( "name", is( "renato" ) );
     }
 
     @Test
     public void testeTamanhoDosItemsMostradosIgalAoPerPage() {
         int paginaEsperada = 2;
 
-       int perPageEsperado = retornaPerPageEsperado(paginaEsperada);
+        int perPageEsperado = retornaPerPageEsperado( paginaEsperada );
 
         given()
-                .params("page", paginaEsperada).
+                .params( "page", paginaEsperada ).
                 when(). //Quando
-                  get(LISTA_USUARIOS_ENDPOINT). //endpoint
+                get( LISTA_USUARIOS_ENDPOINT ). //endpoint
                 then(). //o que espero
-                statusCode(HttpStatus.SC_OK) //Verbo HTTP 200
+                statusCode( HttpStatus.SC_OK ) //Verbo HTTP 200
                 .body(
-                        "page", is(paginaEsperada),
-                        "data.size()", is(perPageEsperado),
-                        "data.findAll {it.avatar.startsWith('https://reqres.in/img/faces') }.size()", is(perPageEsperado) //Groovy Collection
+                        "page", is( paginaEsperada ),
+                        "data.size()", is( perPageEsperado ),
+                        "data.findAll {it.avatar.startsWith('https://reqres.in/img/faces') }.size()", is( perPageEsperado ) //Groovy Collection
                 );
 
     }
 
     @Test
-    public void testMostraUsuarioEspecifico(){
-                Usuario usuario =  given().
-                pathParam("userId", "2")
+    public void testMostraUsuarioEspecifico() {
+        Usuario usuario = given().
+                pathParam( "userId", "2" )
                 .when()
-                    .get(MOSTRAR_USUARIOS_ENDPOINT)
-                        .then()
-                   .statusCode(HttpStatus.SC_OK)
-                        .extract()
-                        .body().jsonPath().getObject("data", Usuario.class);
-                            assertThat(usuario.getEmail(), containsString("@reqres.in"));
-                             assertThat(usuario.getName(), containsString("Janet"));
-                              assertThat(usuario.getLastName(), containsString("Weaver"));
+                .get( MOSTRAR_USUARIOS_ENDPOINT )
+                .then()
+                .statusCode( HttpStatus.SC_OK )
+                .extract()
+                .body().jsonPath().getObject( "data", Usuario.class );
+        assertThat( usuario.getEmail(), containsString( "@reqres.in" ) );
+        assertThat( usuario.getName(), containsString( "Janet" ) );
+        assertThat( usuario.getLastName(), containsString( "Weaver" ) );
 
 
     }
 
-    private int retornaPerPageEsperado(int page) {
-      return given().
-                params("page", page).
+    private int retornaPerPageEsperado( int page ) {
+        return given().
+                params( "page", page ).
                 when()
-                    .get(LISTA_USUARIOS_ENDPOINT).
+                .get( LISTA_USUARIOS_ENDPOINT ).
                         then().
-                            statusCode(HttpStatus.SC_OK).
+                        statusCode( HttpStatus.SC_OK ).
                         extract().
-                            path("per_page");
+                        path( "per_page" );
     }
 }

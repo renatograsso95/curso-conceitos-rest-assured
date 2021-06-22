@@ -7,19 +7,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties( ignoreUnknown = true )
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Usuario {
 
-    @JsonAlias("first_name")
+    @JsonAlias( "first_name" )
     private String name;
-    @JsonAlias("last_name")
+    @JsonAlias( "last_name" )
     private String lastName;
     private String job;
     private String email;
-
 
 
 }

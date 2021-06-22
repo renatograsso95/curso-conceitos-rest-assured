@@ -16,38 +16,38 @@ public class TestRegistro extends TestBase {
     private static final String LOGIN_USUARIO_ENDPOINT = "/login";
 
     @BeforeClass
-    public static void setupRegistro(){
+    public static void setupRegistro() {
         RestAssured.responseSpecification = new ResponseSpecBuilder()
-              .expectStatusCode(HttpStatus.SC_BAD_REQUEST)
+                .expectStatusCode( HttpStatus.SC_BAD_REQUEST )
                 .build();
     }
 
     //Esse teste deveria estar no teste login, porém esta aqui para mostrar a funcionalidade de multiplos setuups e ResponseSpec
     @Test
-    public void testeNaoEfetuaRegistroQuandoSenhaEstaFaltando(){
+    public void testeNaoEfetuaRegistroQuandoSenhaEstaFaltando() {
         Usuario usuario = new Usuario();
-        usuario.setEmail("sydney@fife");
+        usuario.setEmail( "sydney@fife" );
 
-       given().
-                    body(usuario)
+        given().
+                body( usuario )
                 .when()
-                    .post(REGISTRAR_USUARIO_ENDPOINT)
+                .post( REGISTRAR_USUARIO_ENDPOINT )
                 .then()
-                    .statusCode(HttpStatus.SC_BAD_REQUEST).
-                    body("error", is("Missing password"));
+                .statusCode( HttpStatus.SC_BAD_REQUEST ).
+                body( "error", is( "Missing password" ) );
     }
 
     @Test
-    public void testeLoginNaoEfetuadoQuandoASenhaEstaFaltando(){
+    public void testeLoginNaoEfetuadoQuandoASenhaEstaFaltando() {
         Usuario usuario = new Usuario();
-        usuario.setEmail("sydney@fife");
+        usuario.setEmail( "sydney@fife" );
 
         given().
-                body(usuario)
+                body( usuario )
                 .when()
-                .post(LOGIN_USUARIO_ENDPOINT)
+                .post( LOGIN_USUARIO_ENDPOINT )
                 .then()
-                .statusCode(HttpStatus.SC_BAD_REQUEST).
-                body("error", is("Missing password"));
+                .statusCode( HttpStatus.SC_BAD_REQUEST ).
+                body( "error", is( "Missing password" ) );
     }
 }
